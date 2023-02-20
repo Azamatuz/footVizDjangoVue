@@ -10,3 +10,6 @@ This is a web application that allows you to generate graphs of football game st
 ## Technology Stack
 Backend: Django, Django REST framework, PostgreSQL
 Frontend: Vue.js, Chart.js, Bootstrap
+
+## Virtual Environment
+djVue
