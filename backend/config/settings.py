@@ -40,12 +40,14 @@ INSTALLED_APPS = [
 
     # Third party apps
     'rest_framework',
+    'corsheaders',
 
     # Local apps
     'games',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -61,6 +63,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ]
 }
+
+# Cors Headers Settings
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://Localhost:8000'
+]
 
 ROOT_URLCONF = "config.urls"
 

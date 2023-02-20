@@ -7,4 +7,4 @@ class Game(models.Model):
     away_team = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.date
+        return self.home_team + " vs " + self.away_team
