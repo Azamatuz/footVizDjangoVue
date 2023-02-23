@@ -25,7 +25,7 @@ export default {
     };
   },
   mounted() {
-    axios.get('http://localhost:3000/api/games')
+    axios.get('http://127.0.0.1:8000/api/games')
       .then(response => {
         this.games = response.data;
         console.log(this.games);
