@@ -1,14 +1,41 @@
 
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h3>Games</h3>
-    <ul v-for="game in games" :key="game.id">
-      <li>
-        {{ game.date }}
-        {{ game.home_team }} vs {{ game.away_team }}
-      </li>
-    </ul>
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <!-- v-for game in games in <ul><li>-->
+              <ul class="nav flex-column">
+                <li class="nav-item" v-for="game in games" :key="game.id">
+                  <a class="nav-link active" href="#">
+                    <span data-feather="home">{{ game.date }}</span>
+                    <br>
+                    <span class="">{{ game.home_team }} vs {{ game.away_team }}</span>
+                  </a>
+                </li>
+              </ul>
+
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Saved reports</span>
+              <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="plus-circle"></span>
+              </a>
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="file-text"></span>
+                  Current month
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
   </div>
 </template>
 
