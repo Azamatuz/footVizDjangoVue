@@ -3,9 +3,10 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h3>Games</h3>
-    <ul>
-      <li v-for="game in games" :key="game.id">
-        <router-link :to="{ name: 'Game', params: { id: game.id } }">{{ game.name }}</router-link>
+    <ul v-for="game in games" :key="game.id">
+      <li>
+        {{ game.date }}
+        {{ game.home_team }} vs {{ game.away_team }}
       </li>
     </ul>
   </div>
@@ -25,13 +26,14 @@ export default {
     };
   },
   mounted() {
-    axios.get('http://127.0.0.1:8000/api/games')
+    axios.get('http://localhost:8000/api/games/')
       .then(response => {
+        console.log(response);
         this.games = response.data;
         console.log(this.games);
       })
       .catch(error => {
-        console.log(error);
+        console.log('error', error);
       });
   },
 }
