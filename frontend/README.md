@@ -33,3 +33,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### Virtual Environment
+djVue
+
+### Steps to run server
+1. npm run dev
