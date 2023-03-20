@@ -14,49 +14,22 @@
         </div>
     </div>
     <div class="row justify-content-end">
-        <div class="col-12">
-            <h2 class="m-3">{{ homeTeam.name }}</h2>
-            <div class="table-responsive my-3">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Player</th>
-                            <th style="max-width: 20px;">Number</th>
-                            <th>Goals</th>
-                            <th>Assists</th>
-                            <th>Passes</th>
-                            <th>Blocks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="index in homeTeamPlayers.length" :key="index">
-                            <td>{{ homeTeamPlayers[index-1].name }}</td>
-                            <td>{{ homeTeamPlayers[index-1].number }}</td>
-                            <td>{{ homeTeamPlayers[index-1].stats.assists }}</td>
-                            <td>{{ homeTeamPlayers[index-1].stats.goals }}</td>
-                            <td>{{ homeTeamPlayers[index-1].stats.passes }}</td>
-                            <td>{{ homeTeamPlayers[index-1].stats.blocks }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+      <div class="col-12">
+        <h2 class="m-3">{{ homeTeam.name }}</h2>
+        <StatsTable v-bind:playerStats="homeTeamPlayers"/>
+      </div>
+        <div class="col-6" v-for="index in homeTeamPlayers.length" :key="index">
+          <RadarChart v-bind:playerStats="Object.values(homeTeamPlayers[index-1])" />
         </div>
-        <div row v-for="index in homeTeamPlayers.length" :key="index">
-            <div class="col-3">
-                <RadarChart v-bind:playerStats="Object.values(homeTeamPlayers[index-1].stats)"/>
-            </div>
-    </div>
     </div>
     <div class="row justify-content-end">
-        <div class="col-12">
-            <h2 class="m-3">{{ awayTeam.name }}</h2>
-            <StatsTable v-bind:playerStats="awayTeamPlayers"/>
-        </div>
-        <div class="row" v-for="index in awayTeamPlayers.length" :key="index">
-            <div class="col-3">
-                <RadarChart v-bind:playerStats="Object.values(awayTeamPlayers[index-1].stats)"/>
-            </div>
-        </div>
+      <div class="col-12">
+        <h2 class="m-3">{{ awayTeam.name }}</h2>
+        <StatsTable v-bind:playerStats="awayTeamPlayers" />
+      </div>
+      <div class="col-6" v-for="index in awayTeamPlayers.length" :key="index">
+        <RadarChart v-bind:playerStats="Object.values(awayTeamPlayers[index-1])" />
+      </div>
     </div>
 
 </template>

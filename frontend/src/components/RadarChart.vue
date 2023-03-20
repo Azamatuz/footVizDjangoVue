@@ -1,5 +1,4 @@
 <template>
-    {{ playerStats }}
     <Bar
       id="my-chart-id"
       :options="chartOptions"
@@ -29,17 +28,17 @@
     data() {
       return {
         chartData: {
-          labels: [ 'assists', 'goals', 'passes', 'blocks' ],
+          labels: [ "shots", "sca", "touches", "passes", "carries", "press", "tackled", "interceptions", "blocks" ],
           datasets: [
           {
-      label: 'My First dataset',
+      label: this.playerStats[1],
       backgroundColor: 'rgba(179,181,198,0.2)',
       borderColor: 'rgba(179,181,198,1)',
       pointBackgroundColor: 'rgba(179,181,198,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(179,181,198,1)',
-      data: this.playerStats
+      data: Object.values(this.playerStats[2]).slice(1, 10)
     }]
         },
         chartOptions: {

@@ -5,7 +5,7 @@ from .models import Game, Team, Player, Stat
 class StatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stat
-        fields = ("id", "assists", "goals", "passes", "blocks")
+        fields = ("id", "shots", "sca", "touches", "passes", "carries", "press", "tackled", "interceptions", "blocks")
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ("id", "name", "number", "birthday", "stats")
+        fields = ("id", "name", "stats")
 
 
 class TeamSerializer(serializers.ModelSerializer):

@@ -4,17 +4,25 @@ from django.db import models
 # Create your models here.
 # Soccer stats
 class Stat(models.Model):
-    assists = models.IntegerField()
-    goals = models.IntegerField()
-    passes = models.IntegerField()
-    blocks = models.IntegerField()
+
+    player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="player")
+    shots = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    sca = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    touches = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    passes = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    carries = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    press = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    tackled = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    interceptions = models.DecimalField(
+        max_digits=5, decimal_places=2, blank=True, null=True
+    )
+    blocks = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
 
 class Player(models.Model):
     name = models.CharField(max_length=100)
-    number = models.IntegerField()
-    birthday = models.DateField()
-    stats = models.ForeignKey(Stat, on_delete=models.CASCADE, related_name="stats")
+    # player can have multiple stats for different games
+    stats = models.ManyToManyField(Stat, related_name="stats")
 
     def __str__(self):
         return self.name

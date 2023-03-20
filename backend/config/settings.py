@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     # Local apps
     'games',
-    'api'
+    'api',
+    'dataimport'
 ]
 
 MIDDLEWARE = [
