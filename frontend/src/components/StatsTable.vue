@@ -12,7 +12,6 @@
                             <th>Touches</th>
                             <th>Passes</th>
                             <th>Carries</th>
-                            <th>Press</th>
                             <th>Tackled</th>
                             <th>Interceptions</th>
                             <th>Blocks</th>
@@ -21,15 +20,14 @@
                     <tbody>
                         <tr v-for="index in playerStats.length" :key="index">
                             <td>{{ playerStats[index-1].name }}</td>
-                            <td>{{ playerStats[index-1].stats.shots }}</td>
-                            <td>{{ playerStats[index-1].stats.sca }}</td>
-                            <td>{{ playerStats[index-1].stats.touches }}</td>
-                            <td>{{ playerStats[index-1].stats.passes }}</td>
-                            <td>{{ playerStats[index-1].stats.carries }}</td>
-                            <td>{{ playerStats[index-1].stats.press }}</td>
-                            <td>{{ playerStats[index-1].stats.tackled }}</td>
-                            <td>{{ playerStats[index-1].stats.interceptions }}</td>
-                            <td>{{ playerStats[index-1].stats.blocks }}</td>
+                            <td>{{ playerStats[index-1].stats[0].shots }}</td>
+                            <td>{{ playerStats[index-1].stats[0].sca }}</td>
+                            <td>{{ playerStats[index-1].stats[0].touches }}</td>
+                            <td>{{ playerStats[index-1].stats[0].passes }}</td>
+                            <td>{{ playerStats[index-1].stats[0].carries }}</td>
+                            <td>{{ playerStats[index-1].stats[0].tackled }}</td>
+                            <td>{{ playerStats[index-1].stats[0].interceptions }}</td>
+                            <td>{{ playerStats[index-1].stats[0].blocks }}</td>
                         </tr>
                     </tbody>
                 </table>

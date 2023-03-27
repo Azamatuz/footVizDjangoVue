@@ -3,9 +3,10 @@ from django.db import models
 
 # Create your models here.
 # Soccer stats
-class Stat(models.Model):
 
-    player = models.ForeignKey("Player", on_delete=models.CASCADE, related_name="player")
+
+
+class Stat(models.Model):
     shots = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     sca = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     touches = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
@@ -18,15 +19,9 @@ class Stat(models.Model):
     )
     blocks = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
-
 class Player(models.Model):
     name = models.CharField(max_length=100)
-    # player can have multiple stats for different games
     stats = models.ManyToManyField(Stat, related_name="stats")
-
-    def __str__(self):
-        return self.name
-
 
 class Team(models.Model):
     name = models.CharField(max_length=100)

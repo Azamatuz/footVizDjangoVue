@@ -1,0 +1,11 @@
+// TODO - todo note
+
+## Left side bar (sidebar) Game list
+ order by year, month
+group matches by month, year
+toggle matches by month, year
+
+## Team average statistics
+add team average statistics to Game models
+add team average statistics radar chart to Game detail view
+

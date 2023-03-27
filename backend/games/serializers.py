@@ -5,15 +5,16 @@ from .models import Game, Team, Player, Stat
 class StatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stat
-        fields = ("id", "shots", "sca", "touches", "passes", "carries", "press", "tackled", "interceptions", "blocks")
+        # all fields
+        fields = "shots", "sca", "touches", "passes", "carries", "tackled", "interceptions", "blocks"
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    stats = StatSerializer(read_only=True)
+    stats = StatSerializer(many=True, read_only=True)
 
     class Meta:
         model = Player
-        fields = ("id", "name", "stats")
+        fields = ("name", "stats")
 
 
 class TeamSerializer(serializers.ModelSerializer):

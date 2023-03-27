@@ -10,29 +10,62 @@ def import_data(request):
     if request.method == "POST":
         form = DataImportForm(request.POST, request.FILES)
         if form.is_valid():
-            # process the uploaded file
-            csv_file = request.FILES["csv_file"]
-            decoded_file = csv_file.read().decode("utf-8").splitlines()
+            # save game date game_date
+            game_date = form.cleaned_data["game_date"]
 
-            reader = csv.DictReader(decoded_file)
-            for row in reader:
+            # save home team
+            home_team_name = form.cleaned_data["home_team_name"]
+            home_team, created = Team.objects.get_or_create(name=home_team_name)
+
+            away_team_name = form.cleaned_data["away_team_name"]
+            away_team, created = Team.objects.get_or_create(name=away_team_name)
+            game, created = Game.objects.get_or_create(date=game_date, home_team=home_team, away_team=away_team)
+            # process the uploaded file
+            home_team_csv = request.FILES["home_team_csv"]
+            home_decoded_file = home_team_csv.read().decode("utf-8").splitlines()
+
+            home_reader = csv.DictReader(home_decoded_file)
+            for row in home_reader:
                 # create player performance
-                data = {
+                home_data = {
                     "shots": row["Shots"],
                     "sca": row["SCA"],
                     "touches": row["Touches"],
-                    "passes": row["Passes"],
+                    "passes": row["Pass"],
                     "carries": row["Carries"],
-                    "press": row["Press"],
                     "tackled": row["Tackled"],
                     "interceptions": row["Interceptions"],
                     "blocks": row["Blocks"],
                 }
-                performance, created = Stat.objects.get_or_create(**data)
+                home_performance, created = Stat.objects.get_or_create(**home_data)
                 # player can have multiple stats for different games
-                player, created = Player.objects.get_or_create(name=row['Player'])
-                player.stats.set(performance)
+                home_player, created = Player.objects.get_or_create(name=row[""])
+                home_player.stats.add(home_performance)
+                # add player to home team
+                home_team.players.add(home_player)
 
+            away_team_csv = request.FILES["away_team_csv"]
+            away_decoded_file = away_team_csv.read().decode("utf-8").splitlines()
+
+            away_reader = csv.DictReader(away_decoded_file)
+            for row in away_reader:
+                # create player performance
+                away_data = {
+                    "shots": row["Shots"],
+                    "sca": row["SCA"],
+                    "touches": row["Touches"],
+                    "passes": row["Pass"],
+                    "carries": row["Carries"],
+                    "tackled": row["Tackled"],
+                    "interceptions": row["Interceptions"],
+                    "blocks": row["Blocks"],
+                }
+                away_performance, created = Stat.objects.get_or_create(**away_data)
+                # player can have multiple stats for different games
+                away_player, created = Player.objects.get_or_create(name=row[""])
+                away_player.stats.add(away_performance)
+                # add player to home team
+                away_team.players.add(away_player)
 
 
             # messages.success(request, 'Data imported successfully')
