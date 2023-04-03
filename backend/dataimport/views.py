@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 import csv
 import io
-from games.models import Stat, Player, Team, Game, GameData
+from games.models import Stat, Player, Team, Game, TeamStats
 from .forms import DataImportForm
 
 
@@ -19,7 +19,8 @@ def import_data(request):
 
             away_team_name = form.cleaned_data["away_team_name"]
             away_team, created = Team.objects.get_or_create(name=away_team_name)
-            game, created = Game.objects.get_or_create(date=game_date, home_team=home_team, away_team=away_team)
+
+            teams_stats, created = TeamStats.objects.get_or_create(date=game_date, home_team_stats=home_team, away_team_stats=away_team)
             # process the uploaded file
             home_team_csv = request.FILES["home_team_csv"]
             home_decoded_file = home_team_csv.read().decode("utf-8").splitlines()
@@ -40,9 +41,12 @@ def import_data(request):
                 home_performance, created = Stat.objects.get_or_create(**home_data)
                 # player can have multiple stats for different games
                 home_player, created = Player.objects.get_or_create(name=row[""])
-                home_player.stats.add(home_performance)
-                # add player to home team
-                home_team.players.add(home_player)
+                if home_player.name == "Team":
+                    teams_stats.stats.add(home_performance)
+                else:
+                    home_player.stats.add(home_performance)
+                    # add player to home team
+                    home_team.players.add(home_player)
 
             away_team_csv = request.FILES["away_team_csv"]
             away_decoded_file = away_team_csv.read().decode("utf-8").splitlines()
@@ -63,11 +67,15 @@ def import_data(request):
                 away_performance, created = Stat.objects.get_or_create(**away_data)
                 # player can have multiple stats for different games
                 away_player, created = Player.objects.get_or_create(name=row[""])
-                away_player.stats.add(away_performance)
-                # add player to home team
-                away_team.players.add(away_player)
+                if away_player.name == "Team":
+                    teams_stats.stats.add(away_performance)
+                else:
+                    away_player.stats.add(away_performance)
+                    # add player to home team
+                    away_team.players.add(away_player)
 
-
+            # create game
+            game, created = Game.objects.get_or_create(date=game_date, teams_stats=teams_stats, home_team=home_team, away_team=away_team)
             # messages.success(request, 'Data imported successfully')
             return redirect("data_imported")
     else:

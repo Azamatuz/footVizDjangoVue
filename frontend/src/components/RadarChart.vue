@@ -1,5 +1,4 @@
 <template>
-{{ Object.values(playerStats) }}
     <Bar
       id="my-chart-id"
       :options="chartOptions"
@@ -44,13 +43,13 @@ export default {
         datasets: [
           {
             label: this.playerStats[0],
-            backgroundColor: 'rgba(179,181,198,0.2)',
-            borderColor: 'rgba(179,181,198,1)',
-            pointBackgroundColor: 'rgba(179,181,198,1)',
+            data: Object.values(this.playerStats[1][0]),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            pointBackgroundColor: 'rgb(54, 162, 235)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgba(179,181,198,1)',
-            data: Object.values(this.playerStats[1][0])
+            pointHoverBorderColor: 'rgb(54, 162, 235)'
           }
         ]
       }

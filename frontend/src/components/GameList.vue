@@ -99,13 +99,13 @@ export default {
   mounted() {
     axios.get('http://localhost:8000/api/games/')
       .then(response => {
-        console.log(response);
         this.games = response.data;
-        console.log(this.games);
+        this.selectLastGameId();
       })
       .catch(error => {
         console.log('error', error);
       });
+    //
   },
   methods: {
     selectGame(gameId) {
@@ -114,13 +114,16 @@ export default {
     },
     selectMonth(monthId) {
       this.currentMonth = monthId;
+    },
+    selectLastGameId(){
+      this.$emit('default-id', this.games[this.games.length - 1].id);
     }
   },
   computed: {
     // Sort games by date
     sortedGames() {
       return this.games.sort((a, b) => {
-        return new Date(a.date) - new Date(b.date);
+        return new Date(b.date) - new Date(a.date);
       });
     }
   },

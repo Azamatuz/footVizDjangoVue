@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Game, Team, Player, Stat
+from .models import Game, Team, Player, Stat, TeamStats
 
 
 class StatSerializer(serializers.ModelSerializer):
@@ -22,12 +22,20 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ("id", "name", "city", "division", "players")
+        fields = ("name", "players")
 
+
+class TeamStatsSerializer(serializers.ModelSerializer):
+    stats = StatSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TeamStats
+        fields = ("id", "stats")
 
 class GameSerializer(serializers.ModelSerializer):
+    teams_stats = TeamStatsSerializer(read_only=True)
     home_team = TeamSerializer(read_only=True)
-    home_team_players = PlayerSerializer(many=True, read_only=True)
+    home_team_players = PlayerSerializer(read_only=True)
     away_team = TeamSerializer(read_only=True)
     away_team_players = PlayerSerializer(many=True, read_only=True)
 
@@ -36,9 +44,10 @@ class GameSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "date",
+            "teams_stats",
             "home_team",
-            "away_team",
             "home_team_players",
+            "away_team",
             "away_team_players",
         )
 

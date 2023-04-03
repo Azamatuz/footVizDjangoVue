@@ -33,14 +33,23 @@ class Team(models.Model):
         return self.name
 
 
+class TeamStats(models.Model):
+    date = models.DateField()
+    home_team_stats = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team_stats")
+    away_team_stats = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team_stats")
+    stats = models.ManyToManyField(Stat, related_name="team_stats")
+
 class Game(models.Model):
     date = models.DateField()
+    teams_stats = models.OneToOneField(TeamStats, on_delete=models.CASCADE)
     home_team = models.ForeignKey(
         Team, on_delete=models.CASCADE, related_name="home_team"
     )
     away_team = models.ForeignKey(
         Team, on_delete=models.CASCADE, related_name="away_team"
     )
+
+
 
 
 class GameData(models.Model):
