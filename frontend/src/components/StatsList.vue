@@ -14,8 +14,8 @@
       <div class="col-12">
         <h1 class="h2">Teams comparison</h1>
       </div>
-      <div class="col-12 col-md-6" v-for="(team, index) in teamsStats" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(team)" />
+      <div class="col-12">
+        <BarChart v-bind:homeTeamStats="homeTeamStats" v-bind:awayTeamStats="awayTeamStats" />
       </div>
     </div>
     <div class="row" id="home-team">
@@ -24,7 +24,7 @@
         <StatsTable v-bind:playerStats="homeTeamPlayers"/>
       </div>
       <div class="col-6" v-for="(player, index) in homeTeamPlayers" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(player)" />
+        <RadarChart v-bind:playerStats="Object.values(player)" v-bind:homeTeam="true"/>
       </div>
     </div>
     <div class="row" id="away-team">
@@ -33,7 +33,7 @@
         <StatsTable v-bind:playerStats="awayTeamPlayers" />
       </div>
       <div class="col-6" v-for="(player, index) in awayTeamPlayers" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(player)" />
+        <RadarChart v-bind:playerStats="Object.values(player)" v-bind:homeTeam="false"/>
       </div>
     </div>
 
@@ -44,6 +44,8 @@ import axios from 'axios';
 // components
 import RadarChart from './RadarChart.vue'
 import StatsTable from './StatsTable.vue'
+import BarChart from './VerticalBar.vue'
+import { Bar } from 'vue-chartjs';
 
 export default {
   name: 'StatsList',
@@ -54,7 +56,8 @@ export default {
   components: {
     RadarChart,
     StatsTable,
-  },
+    BarChart,
+},
   data() {
     return {
         statsData: [],
