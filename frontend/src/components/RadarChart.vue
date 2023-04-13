@@ -25,7 +25,8 @@ export default {
     Bar: Radar
   },
   props: {
-    playerStats: Array
+    playerStats: Array,
+    homeTeam: Boolean,
   },
   computed: {
     chartData() {
@@ -44,12 +45,12 @@ export default {
           {
             label: this.playerStats[0],
             data: Object.values(this.playerStats[1][0]),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
-            pointBackgroundColor: 'rgb(54, 162, 235)',
+            backgroundColor: this.bgColor,
+            borderColor: this.borderColor,
+            pointBackgroundColor: this.pointColor,
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(54, 162, 235)'
+            pointHoverBorderColor: this.pointHoverColor,
           }
         ]
       }
@@ -57,17 +58,21 @@ export default {
   },
   data() {
     return {
+      bgColor: this.homeTeam ? 'rgba(255, 99, 132, 0.2)' : 'rgba(54, 162, 235, 0.2)',
+      borderColor: this.homeTeam ? 'rgb(255, 99, 132)' : 'rgb(54, 162, 235)',
+      pointColor: this.homeTeam ? 'rgb(255, 99, 132)' : 'rgb(54, 162, 235)',
+      pointHoverColor: this.homeTeam ? 'rgb(255, 99, 132)' : 'rgb(54, 162, 235)',
       chartOptions: {
         responsive: true,
         scales: {
-        r: {
-            angleLines: {
-                display: false
-            },
-            suggestedMin: 0,
-            suggestedMax: 1
+          r: {
+              angleLines: {
+                  display: false
+              },
+              suggestedMin: 0,
+              suggestedMax: 1
+          }
         }
-    }
       }
     }
   }

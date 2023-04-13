@@ -109,6 +109,7 @@ export default {
   },
   methods: {
     selectGame(gameId) {
+      console.log('gameId', gameId)
       this.selectedGameId = gameId;
       this.$emit('game-selected', gameId);
     },

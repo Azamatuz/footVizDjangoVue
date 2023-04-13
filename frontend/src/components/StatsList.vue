@@ -14,8 +14,8 @@
       <div class="col-12">
         <h1 class="h2">Teams comparison</h1>
       </div>
-      <div class="col-12 col-md-6" v-for="(team, index) in statsData" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(team)" />
+      <div class="col-12">
+        <BarChart v-bind:homeTeamStats="homeTeamStats" v-bind:awayTeamStats="awayTeamStats" />
       </div>
     </div>
     <div class="row" id="home-team">
@@ -24,7 +24,7 @@
         <StatsTable v-bind:playerStats="homeTeamPlayers"/>
       </div>
       <div class="col-6" v-for="(player, index) in homeTeamPlayers" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(player)" />
+        <RadarChart v-bind:playerStats="Object.values(player)" v-bind:homeTeam="true"/>
       </div>
     </div>
     <div class="row" id="away-team">
@@ -33,7 +33,7 @@
         <StatsTable v-bind:playerStats="awayTeamPlayers" />
       </div>
       <div class="col-6" v-for="(player, index) in awayTeamPlayers" :key="index">
-        <RadarChart v-bind:playerStats="Object.values(player)" />
+        <RadarChart v-bind:playerStats="Object.values(player)" v-bind:homeTeam="false"/>
       </div>
     </div>
 
@@ -44,6 +44,8 @@ import axios from 'axios';
 // components
 import RadarChart from './RadarChart.vue'
 import StatsTable from './StatsTable.vue'
+import BarChart from './VerticalBar.vue'
+import { Bar } from 'vue-chartjs';
 
 export default {
   name: 'StatsList',
@@ -54,7 +56,8 @@ export default {
   components: {
     RadarChart,
     StatsTable,
-  },
+    BarChart,
+},
   data() {
     return {
         statsData: [],
@@ -72,44 +75,34 @@ export default {
 
   },
   methods: {
-    setTeamsStats(){
-      // combine this.homeTeam.name and this.teamsStats[0] into this.homeTeamStats: { name: 'this.homeTeam.name', stats: [this.teamsStats[0]] }
-      this.homeTeamStats = { name: this.homeTeam.name, stats: [this.teamsStats[0]] };
-      this.awayTeamStats = { name: this.awayTeam.name, stats: [this.teamsStats[1]] };
-      this.statsData.push(this.homeTeamStats)
-      this.statsData.push(this.awayTeamStats);
-
-    },
-    getValues() {
-      // extract values from teamsStats to teamsStatsValues
-      for (let i = 0; i < this.teamsStats.length; i++) {
-        this.teamsStatsValues.push(Object.values(this.teamsStats[i]));
-      }
-    },
     normalizeData() {
-      const minMaxNormalization = (value, max) => (value) / (max);
-      const attributes = Object.keys(this.teamsStats[0]);
-      const attributeValues = this.teamsStats.map(obj => attributes.map(attr => Number(obj[attr])));
+      const attributes = ["shots", "sca", "touches", "passes", "carries", "tackled", "interceptions", "blocks"];
+      const attributeValues = this.teamsStats.map(obj => attributes.map(attr => Number(obj.stats[0][attr])));
       const maxValues = attributeValues.reduce((max, curr) => curr.map((value, index) => Math.max(value, max[index])), Array(attributes.length).fill(Number.NEGATIVE_INFINITY));
 
       for (let i = 0; i < this.teamsStats.length; i++) {
         for (const attr of attributes) {
-          this.teamsStats[i][attr] = parseFloat(minMaxNormalization(Number(this.teamsStats[i][attr]), maxValues[attributes.indexOf(attr)])).toFixed(2);
+          const value = parseFloat(this.teamsStats[i].stats[0][attr]);
+          this.teamsStats[i].stats[0][attr] = parseFloat(value / maxValues[attributes.indexOf(attr)]).toFixed(2);
         }
       }
     },
-
+    // make this.homeTeamStats and this.awayTeamStats in this.teamsStats
+    combineTeamsData() {
+      this.teamsStats = [{name: this.homeTeamStats.team_name, stats: this.homeTeamStats.stats}];
+      this.teamsStats.push({name: this.awayTeamStats.team_name, stats: this.awayTeamStats.stats});
+      //this.normalizeData();
+    },
     getGameData(gameId) {
       axios.get('http://localhost:8000/api/games/' + gameId)
         .then(response => {
-          this.teamsStats = response.data.teams_stats.stats;
           this.homeTeam = response.data.home_team;
+          this.homeTeamStats = response.data.home_team_stats;
           this.homeTeamPlayers = response.data.home_team.players;
           this.awayTeam = response.data.away_team;
+          this.awayTeamStats = response.data.away_team_stats;
           this.awayTeamPlayers = response.data.away_team.players;
-          this.normalizeData();
-          this.getValues();
-          this.setTeamsStats()
+          this.combineTeamsData();
         })
         .catch(error => {
           console.log('error', error);

@@ -1,20 +1,26 @@
 from rest_framework import serializers
-from .models import Game, Team, Player, Stat, TeamStats
+from .models import Game, Team, Player, Stat, StatSum, TeamStats
 
 
 class StatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stat
-        # all fields
-        fields = "shots", "sca", "touches", "passes", "carries", "tackled", "interceptions", "blocks"
+        # all fields except id
+        fields = fields = ['shots', 'sca', 'touches', 'passes', 'carries', 'tackled', 'interceptions', 'blocks']
 
+
+class StatSumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StatSum
+        fields = [ 'attack', 'defense']
 
 class PlayerSerializer(serializers.ModelSerializer):
     stats = StatSerializer(many=True, read_only=True)
+    stats_sum = StatSumSerializer(many=True, read_only=True)
 
     class Meta:
         model = Player
-        fields = ("name", "stats")
+        fields = ("name", "stats", "stats_sum")
 
 
 class TeamSerializer(serializers.ModelSerializer):
@@ -30,12 +36,13 @@ class TeamStatsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TeamStats
-        fields = ("id", "stats")
+        fields = ("team_name", "stats")
 
 class GameSerializer(serializers.ModelSerializer):
-    teams_stats = TeamStatsSerializer(read_only=True)
+    home_team_stats = TeamStatsSerializer(read_only=True)
     home_team = TeamSerializer(read_only=True)
     home_team_players = PlayerSerializer(read_only=True)
+    away_team_stats = TeamStatsSerializer(read_only=True)
     away_team = TeamSerializer(read_only=True)
     away_team_players = PlayerSerializer(many=True, read_only=True)
 
@@ -44,9 +51,10 @@ class GameSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "date",
-            "teams_stats",
+            "home_team_stats",
             "home_team",
             "home_team_players",
+            "away_team_stats",
             "away_team",
             "away_team_players",
         )
