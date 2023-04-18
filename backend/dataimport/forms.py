@@ -6,3 +6,8 @@ class DataImportForm(forms.Form):
     away_team_name = forms.CharField()
     home_team_csv = forms.FileField()
     away_team_csv = forms.FileField()
+
+
+class PlayerImportForm(forms.Form):
+    team = forms.CharField()
+    player_csv = forms.FileField()
