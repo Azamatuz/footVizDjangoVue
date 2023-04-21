@@ -14,7 +14,7 @@
               class="nav-link active" @click="selectGame(game.id)">
               <span data-feather="home">{{ game.date }}</span>
               <br>
-              <span class="">{{ game.home_team.name }} vs {{ game.away_team.name }}</span>
+              <span class="">{{ game.home_team }} vs {{ game.away_team }}</span>
             </a>
           </li>
         </ul>
@@ -103,7 +103,7 @@ export default {
         this.selectLastGameId();
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('GameList error', error);
       });
     //
   },

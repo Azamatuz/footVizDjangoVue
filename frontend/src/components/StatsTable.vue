@@ -1,15 +1,10 @@
 <template>
 
-    <div class="row justify-content-end">
-        <div class="row p-0">
-            <div class="col-12 col-md-10 text-start m-0 p-0">
-                <h4>Players' normalized performance </h4>
-            </div>
-            <div class="col-12 col-md-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary"
-                    @click="toggle">{{ toggleBtnText }}
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-12 text-end my-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary"
+                @click="toggle">{{ toggleBtnText }}
+            </button>
         </div>
         <div class="col-12">
             <div class="table-responsive my-3">
@@ -29,15 +24,15 @@
                     </thead>
                     <tbody v-show="showFullTable">
                         <tr v-for="(player, index) in playerStats" :key="index">
-                            <td>{{ player.name }}</td>
-                            <td>{{ player.stats[0].shots }}</td>
-                            <td>{{ player.stats[0].sca }}</td>
-                            <td>{{ player.stats[0].touches }}</td>
-                            <td>{{ player.stats[0].passes }}</td>
-                            <td>{{ player.stats[0].carries }}</td>
-                            <td>{{ player.stats[0].tackled }}</td>
-                            <td>{{ player.stats[0].interceptions }}</td>
-                            <td>{{ player.stats[0].blocks }}</td>
+                            <td>{{ player.player_name }}</td>
+                            <td>{{ player.shots }}</td>
+                            <td>{{ player.sca }}</td>
+                            <td>{{ player.touches }}</td>
+                            <td>{{ player.passes }}</td>
+                            <td>{{ player.carries }}</td>
+                            <td>{{ player.tackled }}</td>
+                            <td>{{ player.interceptions }}</td>
+                            <td>{{ player.blocks }}</td>
                         </tr>
                     </tbody>
                     <tbody v-show="!showFullTable">
@@ -69,17 +64,17 @@ export default {
   },
   data() {
       return {
-          showFullTable: false,
-          toggleBtnText: 'See Full Table',
+          showFullTable: true,
+          toggleBtnText: 'Hide Table',
       };
   },
   methods: {
       toggle() {
             this.showFullTable = !this.showFullTable;
             if (this.showFullTable) {
-                this.toggleBtnText = 'Hide Table';
-            } else {
                 this.toggleBtnText = 'See Full Table';
+            } else {
+                this.toggleBtnText = 'Hide Table';
             }
       }
   }

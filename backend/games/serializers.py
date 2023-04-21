@@ -11,9 +11,11 @@ class PlayerStatSerializer(serializers.ModelSerializer):
 
 
 class PlayerStatSumSerializer(serializers.ModelSerializer):
+    player_name = serializers.CharField(source='player.name')
+    player_team = serializers.CharField(source='player.team')
     class Meta:
         model = PlayerStatSum
-        fields = ['attack', 'defense']
+        fields = ['player_name', 'player_team', 'attack', 'defense']
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -43,4 +45,4 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ['date', 'home_team', 'away_team']
+        fields = ['id', 'date', 'home_team', 'away_team']

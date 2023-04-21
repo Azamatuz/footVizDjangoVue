@@ -69,12 +69,23 @@ class DetailPlayerStatSum(RetrieveAPIView):
     serializer_class = PlayerStatSumSerializer
 
 
-class GameStatsView(ListAPIView):
+class GameStatView(ListAPIView):
     serializer_class = PlayerStatSerializer
 
     def get_queryset(self):
         game_number = self.kwargs.get('game_number', None)
         queryset = PlayerStat.objects.all()
+        if game_number is not None:
+            queryset = queryset.filter(game=game_number)
+        return queryset
+
+
+class PlayerStatSumView(ListAPIView):
+    serializer_class = PlayerStatSumSerializer
+
+    def get_queryset(self):
+        game_number = self.kwargs.get('game_number', None)
+        queryset = PlayerStatSum.objects.all()
         if game_number is not None:
             queryset = queryset.filter(game=game_number)
         return queryset

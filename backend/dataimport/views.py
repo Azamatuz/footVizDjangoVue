@@ -47,6 +47,8 @@ def import_data(request):
                 home_performance, created = PlayerStat.objects.get_or_create(
                     game=game, player=home_player, defaults=home_data
                 )
+                home_performance_sum, created = PlayerStatSum.objects.get_or_create(
+                    game=game, player=home_player, defaults=home_data_sum)
 
             away_team_csv = request.FILES["away_team_csv"]
             away_decoded_file = away_team_csv.read().decode("utf-8").splitlines()
@@ -68,8 +70,9 @@ def import_data(request):
 
                 away_player, created = Player.objects.get_or_create(name=row[""], team=away_team)
                 away_performance, created = PlayerStat.objects.get_or_create(
-                    game=game, player=away_player, defaults=away_data
-                )
+                    game=game, player=away_player, defaults=away_data)
+                away_performance_sum, created = PlayerStatSum.objects.get_or_create(
+                    game=game, player=away_player, defaults=away_data_sum)
             # messages.success(request, 'Data imported successfully')
             return redirect("data_imported")
     else:
