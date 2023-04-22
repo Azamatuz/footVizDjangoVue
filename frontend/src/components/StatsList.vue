@@ -23,20 +23,20 @@
       <div class="col-12">
         <h2 class="text-start">{{ homeTeam }}</h2>
       </div>
-      <div class="col-12 col-md-10 text-start m-0 p-0">
+      <div class="col-12 col-md-10 text-start">
           <h4>Players' normalized performance </h4>
       </div>
-      <TabNav v-bind:PlayersData="homePlayersData" v-bind:homeTeam=true v-bind:tabId="'Home'" />
+      <TabNav v-bind:PlayersSumData="homePlayersSum" v-bind:PlayersData="homePlayersData" v-bind:homeTeam=true v-bind:tabId="'Home'" />
     </div>
 
     <div class="row" id="away-team">
       <div class="col-12">
         <h2 class="text-start">{{ awayTeam }}</h2>
       </div>
-      <div class="col-12 col-md-10 text-start m-0 p-0">
+      <div class="col-12 col-md-10 text-start">
           <h4>Players' normalized performance </h4>
       </div>
-      <TabNav v-bind:PlayersData="awayPlayersData" v-bind:homeTeam=false v-bind:tabId="'Away'" />
+      <TabNav v-bind:PlayersSumData="awayPlayersSum" v-bind:PlayersData="awayPlayersData" v-bind:homeTeam=false v-bind:tabId="'Away'" />
     </div>
 
 </template>
@@ -44,8 +44,6 @@
 <script>
 import axios from 'axios';
 // components
-import RadarChart from './RadarChart.vue'
-import StatsTable from './StatsTable.vue'
 import BarChart from './VerticalBar.vue'
 import TabNav from './TabNav.vue'
 
@@ -56,41 +54,40 @@ export default {
     defaultId: Number,
   },
   components: {
-    RadarChart,
-    StatsTable,
     BarChart,
     TabNav,
   },
   data() {
     return {
         statsData: [],
-        teamsStats: [],
+        playerStatsSum:[],
         homeTeam: '',
         homeTeamStats: '',
-        homeTeamPlayers: [],
         awayTeam: '',
-        awayTeamPlayers: [],
         awayTeamStats: '',
     };
   },
   mounted() {
-    console.log('gameId in statsList', this.gameId);
     this.getGameData(this.gameId);
   },
   methods: {
     getGameData(gameId) {
-      console.log('gameId in get data', gameId);
-      axios.get('http://localhost:8000/api/game-stats/game=' + gameId)
+      axios.get('http://localhost:8000/api/game-stats/game_id=' + gameId)
         .then(response => {
-          console.log('response', response);
           this.statsData = response.data;
         })
         .catch(error => {
           console.log('StatsList error', error);
-        });
+      });
+      axios.get('http://localhost:8000/api/player-stats-sum/game_id=' + gameId)
+        .then(response => {
+          this.playerStatsSum = response.data;
+        })
+        .catch(error => {
+          console.log('StatsList error', error);
+      });
       axios.get('http://localhost:8000/api/games/' + gameId)
         .then(response => {
-          console.log('response', response);
           this.homeTeam = response.data.home_team;
           this.awayTeam = response.data.away_team;
         })
@@ -114,8 +111,18 @@ export default {
         player => player.player_name !== "Team" && player.player_team === this.homeTeam
       );
     },
+    homePlayersSum() {
+      return this.playerStatsSum.filter(
+        player => player.player_name !== "Team" && player.player_team === this.homeTeam
+      );
+    },
     awayPlayersData() {
       return this.statsData.filter(
+        player => player.player_name !== "Team" && player.player_team === this.awayTeam
+      );
+    },
+    awayPlayersSum() {
+      return this.playerStatsSum.filter(
         player => player.player_name !== "Team" && player.player_team === this.awayTeam
       );
     },

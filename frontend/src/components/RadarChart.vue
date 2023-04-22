@@ -44,8 +44,8 @@ export default {
         ],
         datasets: [
           {
-            label: this.playerStats[0],
-            data: Object.values(this.playerStats.slice(2)),
+            label: this.playerStats[1],
+            data: Object.values(this.playerStats.slice(3)),
             backgroundColor: this.bgColor,
             borderColor: this.borderColor,
             pointBackgroundColor: this.pointColor,

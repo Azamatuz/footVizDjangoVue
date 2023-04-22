@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="tab-pane fade" :id="'scatter'+tabId" role="tabpanel" :aria-labelledby="'scatter-tab'+tabId">
-            <ScatterChart v-bind:playerStats="PlayersData" v-bind:homeTeam=homeTeam />
+            <ScatterChart v-bind:playerStats="PlayersSumData" v-bind:homeTeam=homeTeam />
         </div>
         <div class="tab-pane fade" :id="'table'+tabId" role="tabpanel" :aria-labelledby="'table-tab'+tabId">
           <StatsTable v-bind:playerStats="PlayersData" />
@@ -34,6 +34,7 @@ export default {
     name: 'TabNav',
     props: {
         PlayersData: Array,
+        PlayersSumData: Array,
         homeTeam: Boolean,
         tabId: String,
     },

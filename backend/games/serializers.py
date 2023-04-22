@@ -3,19 +3,22 @@ from .models import Team, Player, Game, PlayerStat, PlayerStatSum, TeamStat
 
 
 class PlayerStatSerializer(serializers.ModelSerializer):
+    # display game id instead of game object
+    game = serializers.CharField(source='game.id')
     player_name = serializers.CharField(source='player.name')
     player_team = serializers.CharField(source='player.team')
     class Meta:
         model = PlayerStat
-        fields = ['player_name', 'player_team', 'shots', 'sca', 'tackled', 'interceptions', 'blocks', 'touches', 'passes', 'carries']
+        fields = ['game', 'player_name', 'player_team', 'shots', 'sca', 'tackled', 'interceptions', 'blocks', 'touches', 'passes', 'carries']
 
 
 class PlayerStatSumSerializer(serializers.ModelSerializer):
+    game = serializers.CharField(source='game.id')
     player_name = serializers.CharField(source='player.name')
     player_team = serializers.CharField(source='player.team')
     class Meta:
         model = PlayerStatSum
-        fields = ['player_name', 'player_team', 'attack', 'defense']
+        fields = ['game','player_name', 'player_team', 'attack', 'defense']
 
 
 class PlayerSerializer(serializers.ModelSerializer):

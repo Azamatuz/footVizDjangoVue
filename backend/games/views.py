@@ -59,6 +59,16 @@ class DetailStat(RetrieveAPIView):
     serializer_class = PlayerStatSerializer
 
 
+class ListPlayerStat(ListAPIView):
+    queryset = PlayerStat.objects.all()
+    serializer_class = PlayerStatSerializer
+
+
+class DetailPlayerStat(RetrieveAPIView):
+    queryset = PlayerStat.objects.all()
+    serializer_class = PlayerStatSerializer
+
+
 class ListPlayerStatSum(ListAPIView):
     queryset = PlayerStatSum.objects.all()
     serializer_class = PlayerStatSumSerializer
@@ -73,10 +83,9 @@ class GameStatView(ListAPIView):
     serializer_class = PlayerStatSerializer
 
     def get_queryset(self):
-        game_number = self.kwargs.get('game_number', None)
+        game_id = self.kwargs.get('game_id', None)
         queryset = PlayerStat.objects.all()
-        if game_number is not None:
-            queryset = queryset.filter(game=game_number)
+        queryset = queryset.filter(game_id=game_id)
         return queryset
 
 
@@ -84,8 +93,8 @@ class PlayerStatSumView(ListAPIView):
     serializer_class = PlayerStatSumSerializer
 
     def get_queryset(self):
-        game_number = self.kwargs.get('game_number', None)
+        game_id = self.kwargs.get('game_id', None)
         queryset = PlayerStatSum.objects.all()
-        if game_number is not None:
-            queryset = queryset.filter(game=game_number)
+        if game_id is not None:
+            queryset = queryset.filter(game_id=game_id)
         return queryset

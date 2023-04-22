@@ -64,14 +64,14 @@ export default {
       if (!this.computedHomeStats) {
         return [];
       }
-      const { player_name, player_team, touches, passes, carries, ...rest } = this.computedHomeStats;
+      const {game, player_name, player_team, touches, passes, carries, ...rest } = this.computedHomeStats;
       return Object.values(rest);
     },
     awayFilteredData() {
       if (!this.computedAwayStats) {
         return [];
       }
-      const { player_name, player_team, touches, passes, carries, ...rest } = this.computedAwayStats;
+      const {game, player_name, player_team, touches, passes, carries, ...rest } = this.computedAwayStats;
       return Object.values(rest);
     },
 
