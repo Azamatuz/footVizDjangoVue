@@ -32,16 +32,13 @@ export default {
     };
   },
   mounted() {
-    console.log('App mounted');
     this.getDefaultId(this.defaultId);
   },
   methods: {
     selectGame(gameId) {
-      console.log('selectGame', gameId);
       this.gameId = gameId;
     },
     getDefaultId(defaultId) {
-      console.log('defaultId', defaultId);
       this.defaultId = defaultId;
 
     }

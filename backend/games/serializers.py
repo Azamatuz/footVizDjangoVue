@@ -1,70 +1,51 @@
 from rest_framework import serializers
-from .models import Game, Team, Player, Stat, StatSum, TeamStats
+from .models import Team, Player, Game, PlayerStat, PlayerStatSum, TeamStat
 
 
-class StatSerializer(serializers.ModelSerializer):
+class PlayerStatSerializer(serializers.ModelSerializer):
+    # display game id instead of game object
+    game = serializers.CharField(source='game.id')
+    player_name = serializers.CharField(source='player.name')
+    player_team = serializers.CharField(source='player.team')
     class Meta:
-        model = Stat
-        # all fields except id
-        fields = fields = ['shots', 'sca', 'touches', 'passes', 'carries', 'tackled', 'interceptions', 'blocks']
+        model = PlayerStat
+        fields = ['game', 'player_name', 'player_team', 'shots', 'sca', 'tackled', 'interceptions', 'blocks', 'touches', 'passes', 'carries']
 
 
-class StatSumSerializer(serializers.ModelSerializer):
+class PlayerStatSumSerializer(serializers.ModelSerializer):
+    game = serializers.CharField(source='game.id')
+    player_name = serializers.CharField(source='player.name')
+    player_team = serializers.CharField(source='player.team')
     class Meta:
-        model = StatSum
-        fields = [ 'attack', 'defense']
+        model = PlayerStatSum
+        fields = ['game','player_name', 'player_team', 'attack', 'defense']
+
 
 class PlayerSerializer(serializers.ModelSerializer):
-    stats = StatSerializer(many=True, read_only=True)
-    stats_sum = StatSumSerializer(many=True, read_only=True)
+    team = serializers.StringRelatedField()
 
     class Meta:
         model = Player
-        fields = ("name", "stats", "stats_sum")
+        fields = ['id', 'name', 'team']
+
+
+class TeamStatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamStat
+        fields = ['assists', 'shots', 'sca', 'tackled', 'interceptions', 'blocks']
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    players = PlayerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Team
-        fields = ("name", "players")
+        fields = "__all__"
 
-
-class TeamStatsSerializer(serializers.ModelSerializer):
-    stats = StatSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = TeamStats
-        fields = ("team_name", "stats")
 
 class GameSerializer(serializers.ModelSerializer):
-    home_team_stats = TeamStatsSerializer(read_only=True)
-    home_team = TeamSerializer(read_only=True)
-    home_team_players = PlayerSerializer(read_only=True)
-    away_team_stats = TeamStatsSerializer(read_only=True)
-    away_team = TeamSerializer(read_only=True)
-    away_team_players = PlayerSerializer(many=True, read_only=True)
+    home_team = serializers.StringRelatedField()
+    away_team = serializers.StringRelatedField()
 
     class Meta:
         model = Game
-        fields = (
-            "id",
-            "date",
-            "home_team_stats",
-            "home_team",
-            "home_team_players",
-            "away_team_stats",
-            "away_team",
-            "away_team_players",
-        )
-
-
-class GameDataSerializer(serializers.ModelSerializer):
-    game = GameSerializer(read_only=True)
-    home_team_players = PlayerSerializer(many=True, read_only=True)
-    away_team_players = PlayerSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Game
-        fields = ("id", "game", "home_team_players", "away_team_players")
+        fields = ['id', 'date', 'home_team', 'away_team']

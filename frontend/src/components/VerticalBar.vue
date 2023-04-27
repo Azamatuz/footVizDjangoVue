@@ -45,30 +45,34 @@ export default {
             }
         },
         teamData: [],
-        filteredStats: []
+        filteredStats: [],
+        homeTeam: '',
+        awayTeam: '',
     }
   },
   mounted() {
   },
   computed: {
     computedHomeStats() {
-      return this.homeTeamStats.stats
+      return this.homeTeamStats[0]
     },
     computedAwayStats() {
-      return this.awayTeamStats.stats
+      return this.awayTeamStats[0]
     },
     // remove 'passes', 'touches', 'carries' from the teamStats.stats object
     homeFilteredData() {
       if (!this.computedHomeStats) {
         return [];
       }
-      return Object.values(this.computedHomeStats.map(({ touches, passes, carries, ...rest }) => rest)[0]);
+      const {game, player_name, player_team, touches, passes, carries, ...rest } = this.computedHomeStats;
+      return Object.values(rest);
     },
     awayFilteredData() {
       if (!this.computedAwayStats) {
         return [];
       }
-      return Object.values(this.computedAwayStats.map(({ touches, passes, carries, ...rest }) => rest)[0]);
+      const {game, player_name, player_team, touches, passes, carries, ...rest } = this.computedAwayStats;
+      return Object.values(rest);
     },
 
     chartData() {
@@ -82,7 +86,7 @@ export default {
         ],
         datasets: [
           {
-            label: this.homeTeamStats.team_name,
+            label: this.homeTeam,
             data: this.homeFilteredData,
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgb(255, 99, 132)',
@@ -92,7 +96,7 @@ export default {
             pointHoverBorderColor: 'rgb(255, 99, 132)',
           },
           {
-            label: this.awayTeamStats.team_name,
+            label: this.awayTeam,
             data: this.awayFilteredData,
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgb(54, 162, 235)',
@@ -107,5 +111,24 @@ export default {
   },
   methods: {
     },
+  watch: {
+  homeTeamStats: {
+    immediate: true, // set the initial value of homeTeam when the component mounts
+    handler(newValue) {
+      if (newValue.length > 0) {
+        this.homeTeam = newValue[0].player_team;
+      }
+    }
+  },
+  awayTeamStats: {
+    immediate: true, // set the initial value of awayTeam when the component mounts
+    handler(newValue) {
+      if (newValue.length > 0) {
+        this.awayTeam = newValue[0].player_team;
+      }
+    }
+  }
+}
+
 }
 </script>

@@ -14,24 +14,10 @@
               class="nav-link active" @click="selectGame(game.id)">
               <span data-feather="home">{{ game.date }}</span>
               <br>
-              <span class="">{{ game.home_team.name }} vs {{ game.away_team.name }}</span>
+              <span class="">{{ game.home_team }} vs {{ game.away_team }}</span>
             </a>
           </li>
         </ul>
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>Saved reports</span>
-        <a class="d-flex align-items-center text-muted" href="#">
-          <span data-feather="plus-circle"></span>
-        </a>
-      </h6>
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file-text"></span>
-            Current month
-          </a>
-        </li>
-      </ul>
     </div>
   </nav>
 
@@ -103,13 +89,12 @@ export default {
         this.selectLastGameId();
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('GameList error', error);
       });
     //
   },
   methods: {
     selectGame(gameId) {
-      console.log('gameId', gameId)
       this.selectedGameId = gameId;
       this.$emit('game-selected', gameId);
     },
