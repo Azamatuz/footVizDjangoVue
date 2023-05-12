@@ -7,7 +7,7 @@
      </button>
      <div class="navbar-nav">
        <div class="nav-item text-nowrap">
-         <a class="nav-link px-3" href="#">Sign out</a>
+         <a class="nav-link px-3" @click="redirectLogin">Add data</a>
        </div>
      </div>
    </header>
@@ -17,8 +17,12 @@
   export default {
     name: 'NavBar',
     props: {
-
-    }
+    },
+    methods: {
+      redirectLogin() {
+        window.location.href = 'http://127.0.0.1:8000/users/login/';
+      }
+  }
   }
   </script>
 

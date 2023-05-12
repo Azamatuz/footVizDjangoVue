@@ -1,4 +1,5 @@
 from pyexpat.errors import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import csv
 import io
@@ -6,6 +7,7 @@ from games.models import Game, Team, Player, PlayerStat, PlayerStatSum, TeamStat
 from .forms import DataImportForm, PlayerImportForm
 
 
+@login_required
 def import_data(request):
     if request.method == "POST":
         form = DataImportForm(request.POST, request.FILES)
@@ -81,6 +83,7 @@ def import_data(request):
     context = {"form": form}
     return render(request, "import.html", context)
 
+@login_required
 def import_players(request):
     if request.method == "POST":
         form = PlayerImportForm(request.POST, request.FILES)
