@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("games.urls")),
     path("data-import/", include("dataimport.urls")),
+    path('users/', include('django.contrib.auth.urls')),
 ]
