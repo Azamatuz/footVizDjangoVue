@@ -13,3 +13,4 @@ Frontend: Vue.js, Chart.js, Bootstrap
 
 ## Virtual Environment
 djVue
+npm run dev

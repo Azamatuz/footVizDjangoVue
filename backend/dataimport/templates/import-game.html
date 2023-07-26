@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<title>Add Game Statistics Data</title>
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-12 text-center">
+			<h1>Add Game Statisitcs Data</h1>
+			{% if messages %}
+				<ul class="messages">
+					{% for message in messages %}
+						<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row justify-content-center mb-4">
+			<div class="col-12 col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<div class="form-group">
+							<label for="id_game_date">Game Date</label>
+							{{ form.game_date }}
+						</div>
+						<div class="form-group">
+							<label for="id_home_team_name">Home Team Name</label>
+							{{ form.home_team_name }}
+						</div>
+						<div class="form-group">
+							<label for="id_away_team_name">Away Team Name</label>
+							{{ form.away_team_name }}
+						</div>
+						<a href="{{ form.get_add_team_url }}">Team not in the list? Add new one</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center mb-4">
+			<div class="col-12 col-md-6">
+				<div class="card">
+					<div class="card-body">
+						<div class="form-group">
+							<label for="id_home_team_csv">Home Team CSV</label>
+							{{ form.home_team_csv }}
+						</div>
+						<div class="form-group">
+							<label for="id_away_team_csv">Away Team CSV</label>
+							{{ form.away_team_csv }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-6 text-right">
+				<button class="btn btn-primary" type="submit">Import Data</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+	// Add the following script after the form rendering
+	document.getElementById("id_game_date").type = "date";
+</script>
+{% endblock script %}
