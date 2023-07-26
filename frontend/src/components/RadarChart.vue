@@ -33,14 +33,7 @@ export default {
     chartData() {
       return {
         labels: [
-          'shots',
-          'sca',
-          'touches',
-          'passes',
-          'carries',
-          'tackled',
-          'interceptions',
-          'blocks'
+        Object.values(this.playerStats.slice(3)),
         ],
         datasets: [
           {

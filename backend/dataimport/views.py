@@ -81,7 +81,7 @@ def import_data(request):
         form = DataImportForm()
 
     context = {"form": form}
-    return render(request, "import.html", context)
+    return render(request, "import-game.html", context)
 
 @login_required
 def import_players(request):
@@ -97,7 +97,7 @@ def import_players(request):
             player_reader = csv.DictReader(player_decoded_file)
             for row in player_reader:
                 player = Player.objects.create(name=row["Player"], team=team)
-            return redirect("data_imported")
+            return redirect("import_game_data")
     else:
         form = PlayerImportForm()
 
